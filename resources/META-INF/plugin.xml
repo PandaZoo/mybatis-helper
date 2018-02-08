@@ -1,0 +1,49 @@
+<idea-plugin>
+    <id>com.your.company.unique.plugin.id</id>
+    <name>Plugin display name here</name>
+    <version>1.0</version>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[
+      This plugins helps sync the mapper file with PO.</br>
+      If you change PO, mapper should also change, include
+      resultMap, insert, update and so on.
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Nothing here
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <!-- 如果想让其他插件集成这个插件的功能，需要定义一些可集成的point
+         https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_extensions_and_extension_points.html
+     -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <dom.fileDescription implementation="cn.kevin.xml.MybatisDomFileDescription" />
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <group id="MybatisHelper.modify" text="modify mybatis po" description="modify">
+            <add-to-group group-id="GenerateGroup" anchor="last" />
+            <action id="MybatisHelperPlugin.modfiy" class="cn.kevin.action.MybatisHelperAction" text="mybaits po modify" description="modify">
+            </action>
+        </group>
+        <group id="plugin" text="plugin" description="plugin">
+            <add-to-group group-id="MainMenu" anchor="after" relative-to-action="HelpMenu" />
+            <action id="mybatis po sync" class="cn.kevin.action.MybatisPoSyncAction" text="mybatis po sync">
+            </action>
+        </group>
+    </actions>
+
+</idea-plugin>
