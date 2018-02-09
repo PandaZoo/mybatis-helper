@@ -10,7 +10,7 @@ import com.google.common.base.Strings;
  */
 public class ConvertorFacotry {
 
-    public static String camlTohyphens(String name) {
+    public static String camlToUnderScore(String name) {
         if (Strings.isNullOrEmpty(name)) {
             return null;
         }
@@ -55,6 +55,6 @@ public class ConvertorFacotry {
 
 
     public static void main(String[] args) {
-        System.out.println(camlTohyphens("woDeTain"));
+        System.out.println(camlToUnderScore("woDeTain"));
     }
 }

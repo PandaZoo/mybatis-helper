@@ -22,9 +22,11 @@ import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.xml.DomManager;
+import org.fest.util.Strings;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -33,6 +35,8 @@ import java.util.regex.Pattern;
  * added at 2018/2/1
  */
 public class MybatisPoSyncAction extends AnAction {
+
+    private final static String INSERT_GOURP_PATTERN = "(\\(.*\\)).*(values).*(\\(.*\\))";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -104,18 +108,19 @@ public class MybatisPoSyncAction extends AnAction {
         List<ElementAndAttributes.Sql> sqls = rootElement.getSqls();
         List<ElementAndAttributes.Insert> inserts = rootElement.getInsertTags();
 
-        addResultMap(project, results, name, propertyName, type);
-        addUpdate(project, sqls, propertyName);
+        addToResultMap(project, results, name, propertyName, type);
+        addToUpdate(project, sqls, propertyName);
+        addToInsert(project, inserts, propertyName);
     }
 
-    private void addResultMap(final Project project, List<ElementAndAttributes.ResultMap> list, String name, String propertyName, String type) {
+    private void addToResultMap(final Project project, List<ElementAndAttributes.ResultMap> list, String name, String propertyName, String type) {
         list.forEach(r -> {
             // 只有是这个bean的type才会进行设置
             if (r.getType().toString().endsWith(name)) {
                 XmlTag xmlTag = r.getXmlTag();
                 XmlTag resultTag = xmlTag.createChildTag("result", xmlTag.getNamespace(), null, false);
                 // 设置resultTag的属性
-                resultTag.setAttribute("column", ConvertorFacotry.camlTohyphens(propertyName));
+                resultTag.setAttribute("column", ConvertorFacotry.camlToUnderScore(propertyName));
                 resultTag.setAttribute("jdbcType", ConvertorFacotry.javaTypeToJdbcType(type));
                 resultTag.setAttribute("property", propertyName);
                 FieldFacotry.addXmlTag(project, xmlTag, resultTag);
@@ -123,22 +128,41 @@ public class MybatisPoSyncAction extends AnAction {
         });
     }
 
-    private void addUpdate(final Project project, List<ElementAndAttributes.Sql> list, String propertyName) {
+    private void addToUpdate(final Project project, List<ElementAndAttributes.Sql> list, String propertyName) {
         list.forEach(s -> {
             String sqlId = s.getId().toString();
             boolean isUpdate = Pattern.compile(Pattern.quote("update"), Pattern.CASE_INSENSITIVE).matcher(sqlId).find();
             if (isUpdate) {
                 XmlTag xmlTag = s.getSetTag().getXmlTag();
-                XmlTag ifTag = xmlTag.createChildTag("if", xmlTag.getNamespace(),  "\n" + ConvertorFacotry.camlTohyphens(propertyName) + " = " + propertyName + ",\n", false);
+                XmlTag ifTag = xmlTag.createChildTag("if", xmlTag.getNamespace(),  "\n" + ConvertorFacotry.camlToUnderScore(propertyName) + " = #{" + propertyName + "},\n", false);
                 ifTag.setAttribute("test", propertyName + " != null");
                 FieldFacotry.addXmlTag(project, xmlTag, ifTag);
             }
         });
     }
 
-    private void addInsert(final Project project, List<ElementAndAttributes.Insert> list, String propertyName) {
+    private void addToInsert(final Project project, List<ElementAndAttributes.Insert> list, String propertyName) {
         list.forEach(i -> {
-            throw new RuntimeException("Todo implemented");
+            // 替换所有的换行符
+            String value = i.getValue().replace("\n", "");
+            Pattern pattern = Pattern.compile(INSERT_GOURP_PATTERN, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(value);
+            String columnStr = "";
+            String fieldStr = "";
+            while(matcher.find()) {
+                columnStr = matcher.group(1);
+                fieldStr = matcher.group(3);
+            }
+
+            if (!Strings.isNullOrEmpty(columnStr) && !Strings.isNullOrEmpty(fieldStr)) {
+                String afterColumnStr = columnStr.replace(")", "," + ConvertorFacotry.camlToUnderScore(propertyName) + ")");
+                String afterFieldStr = columnStr.replace(")", ",#{" + propertyName + "})");
+                // 替换来原来的insert语句中
+                String newInsertStr = value.replace(columnStr, afterColumnStr + "\n").replace(fieldStr, afterFieldStr);
+
+                // set value
+                FieldFacotry.setXmlTagValue(project, i, newInsertStr);
+            }
         });
 
     }
