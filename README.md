@@ -5,13 +5,16 @@
 
 #### 说明
 
-目前在实体的编辑窗口中，点击plugin会弹出窗口，输入字段类型和字段名，如`BigDecimal testName`这种格式的，就会添加到这个POJO上，并且在`class.getSimpleName`基础上拼接`Mapper`的规则去寻找对应的xml文件. 找到之后会在resultMap中添加转成下划线名称的column，在sql的id含有**update**的`<set>`标签中添加该属性
+目前在实体的编辑窗口中，点击plugin会弹出窗口，输入字段类型和字段名，如`BigDecimal testName`这种格式的，就会添加到这个POJO上，并且在`class.getSimpleName`基础上拼接`Mapper`的规则去寻找对应的xml文件. 找到之后会在resultMap中添加转成下划线名称的column，在sql的id含有**update**的`<set>`标签中添加该属性, 在`insert`中增加对应的字段和属性
 
 
 #### 未完成的部分
 
-insert部分是TagValue，所以需要用正则来替换，所以暂时没做。
-希望有同学可以一起做，把日常的痛点给解决掉。
+1. 是否要自定义字段名，这样提供一个映射关系
+2. 是否要把类型和字段名放到两个输入框中，限制可选的类型
+3. 还有什么业务上的痛点
+4. 希望有同学可以一起做，把日常的痛点给解决掉。
+
 
 
 #### 不足之处
