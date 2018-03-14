@@ -26,3 +26,5 @@ nbdist/
 nogit/
 
 out/
+
+mybatis-helper.jar
