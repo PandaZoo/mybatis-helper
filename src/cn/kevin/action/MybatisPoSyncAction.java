@@ -156,9 +156,8 @@ public class MybatisPoSyncAction extends AnAction {
 
             if (!Strings.isNullOrEmpty(columnStr) && !Strings.isNullOrEmpty(fieldStr)) {
                 String afterColumnStr = columnStr.replace(")", "," + ConvertorFacotry.camlToUnderScore(propertyName) + ")");
-                String afterFieldStr = columnStr.replace(")", ",#{" + propertyName + "})");
-                // 替换来原来的insert语句中
-                String newInsertStr = value.replace(columnStr, afterColumnStr + "\n").replace(fieldStr, afterFieldStr);
+                String temp = value.replace(columnStr, afterColumnStr + "\n");
+                String newInsertStr = temp.substring(0, temp.lastIndexOf(")")).concat(", #{" + propertyName + "})");
 
                 // set value
                 FieldFacotry.setXmlTagValue(project, i, newInsertStr);

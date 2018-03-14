@@ -1,8 +1,8 @@
 <idea-plugin>
-    <id>com.your.company.unique.plugin.id</id>
-    <name>Plugin display name here</name>
+    <id>cn.kevin.mybatis.hepler</id>
+    <name>mybatis-helper</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="sutonlineskyon@gmail.com" url="">kevin</vendor>
 
     <description><![CDATA[
       This plugins helps sync the mapper file with PO.</br>
