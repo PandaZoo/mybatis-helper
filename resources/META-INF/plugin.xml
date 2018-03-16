@@ -29,7 +29,7 @@
      -->
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <dom.fileDescription implementation="cn.kevin.xml.MybatisDomFileDescription" />
+        <dom.fileDescription implementation="cn.kevin.xml.MybatisDomFileDescription"  />
     </extensions>
 
     <actions>

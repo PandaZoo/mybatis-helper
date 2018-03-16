@@ -102,7 +102,7 @@ public class MybatisPoSyncAction extends AnAction {
     }
 
     private void writeXml(final Project project, final XmlFile xmlFile, final String name,final String propertyName, final String type) {
-        ElementAndAttributes.Root rootElement = Objects.requireNonNull(DomManager.getDomManager(project).getFileElement(xmlFile, ElementAndAttributes.Root.class, "mapper")).getRootElement();
+        ElementAndAttributes.Root rootElement = Objects.requireNonNull(DomManager.getDomManager(project).getFileElement(xmlFile, ElementAndAttributes.Root.class)).getRootElement();
 
         List<ElementAndAttributes.ResultMap> results = rootElement.getResultMaps();
         List<ElementAndAttributes.Sql> sqls = rootElement.getSqls();
