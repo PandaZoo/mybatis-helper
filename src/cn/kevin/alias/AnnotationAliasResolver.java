@@ -22,32 +22,32 @@ import java.util.stream.Collectors;
  */
 public class AnnotationAliasResolver extends AliasResolver {
 
-  private static final Function<PsiClass, AliasDesc> FUN = psiClass -> {
-    Optional<String> txt = JavaUtils.getAnnotationValueText(psiClass, Annotation.ALIAS);
-    if (!txt.isPresent()) return null;
-    AliasDesc ad = new AliasDesc();
-    ad.setAlias(txt.get());
-    ad.setClazz(psiClass);
-    return ad;
-  };
+    private static final Function<PsiClass, AliasDesc> FUN = psiClass -> {
+        Optional<String> txt = JavaUtils.getAnnotationValueText(psiClass, Annotation.ALIAS);
+        if (!txt.isPresent()) return null;
+        AliasDesc ad = new AliasDesc();
+        ad.setAlias(txt.get());
+        ad.setClazz(psiClass);
+        return ad;
+    };
 
-  public AnnotationAliasResolver(Project project) {
-    super(project);
-  }
-
-  public static final AnnotationAliasResolver getInstance(@NotNull Project project) {
-    return project.getComponent(AnnotationAliasResolver.class);
-  }
-
-  @NotNull
-  @Override
-  public Set<AliasDesc> getClassAliasDescriptions(@Nullable PsiElement element) {
-    Optional<PsiClass> clazz = Annotation.ALIAS.toPsiClass(project);
-    if (clazz.isPresent()) {
-      Collection<PsiClass> res = AnnotatedElementsSearch.searchPsiClasses(clazz.get(), GlobalSearchScope.allScope(project)).findAll();
-      return res.stream().map(FUN).collect(Collectors.toSet());
+    public AnnotationAliasResolver(Project project) {
+        super(project);
     }
-    return Collections.emptySet();
-  }
+
+    public static final AnnotationAliasResolver getInstance(@NotNull Project project) {
+        return project.getComponent(AnnotationAliasResolver.class);
+    }
+
+    @NotNull
+    @Override
+    public Set<AliasDesc> getClassAliasDescriptions(@Nullable PsiElement element) {
+        Optional<PsiClass> clazz = Annotation.ALIAS.toPsiClass(project);
+        if (clazz.isPresent()) {
+            Collection<PsiClass> res = AnnotatedElementsSearch.searchPsiClasses(clazz.get(), GlobalSearchScope.allScope(project)).findAll();
+            return res.stream().map(FUN).collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
+    }
 
 }

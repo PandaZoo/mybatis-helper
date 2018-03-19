@@ -11,8 +11,8 @@ import java.util.List;
  */
 public interface Configuration extends DomElement {
 
-  @NotNull
-  @SubTagList("typeAliases")
-  public List<TypeAliases> getTypeAliases();
+    @NotNull
+    @SubTagList("typeAliases")
+    public List<TypeAliases> getTypeAliases();
 
 }

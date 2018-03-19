@@ -5,12 +5,12 @@ import com.intellij.util.xml.*;
 /**
  * @author yongkang.zhang
  */
-public interface IdDomElement extends DomElement{
+public interface IdDomElement extends DomElement {
 
-  @Required
-  @NameValue
-  @Attribute("id")
-  GenericAttributeValue<String> getId();
+    @Required
+    @NameValue
+    @Attribute("id")
+    GenericAttributeValue<String> getId();
 
-  void setValue(String content);
+    void setValue(String content);
 }

@@ -73,7 +73,6 @@ public class MybatisPoSyncAction extends AnAction {
     }
 
 
-
     private void handleXml(final Project project, final String name, String propertyName, String type) {
         // find xmlFile
         XmlFile xmlFile = findXmlFileByName(project, name);
@@ -101,7 +100,7 @@ public class MybatisPoSyncAction extends AnAction {
         return null;
     }
 
-    private void writeXml(final Project project, final XmlFile xmlFile, final String name,final String propertyName, final String type) {
+    private void writeXml(final Project project, final XmlFile xmlFile, final String name, final String propertyName, final String type) {
         ElementAndAttributes.Root rootElement = Objects.requireNonNull(DomManager.getDomManager(project).getFileElement(xmlFile, ElementAndAttributes.Root.class)).getRootElement();
 
         List<ElementAndAttributes.ResultMap> results = rootElement.getResultMaps();
@@ -134,7 +133,7 @@ public class MybatisPoSyncAction extends AnAction {
             boolean isUpdate = Pattern.compile(Pattern.quote("update"), Pattern.CASE_INSENSITIVE).matcher(sqlId).find();
             if (isUpdate) {
                 XmlTag xmlTag = s.getSetTag().getXmlTag();
-                XmlTag ifTag = xmlTag.createChildTag("if", xmlTag.getNamespace(),  "\n" + ConvertorFacotry.camlToUnderScore(propertyName) + " = #{" + propertyName + "},\n", false);
+                XmlTag ifTag = xmlTag.createChildTag("if", xmlTag.getNamespace(), "\n" + ConvertorFacotry.camlToUnderScore(propertyName) + " = #{" + propertyName + "},\n", false);
                 ifTag.setAttribute("test", propertyName + " != null");
                 FieldFacotry.addXmlTag(project, xmlTag, ifTag);
             }
@@ -149,7 +148,7 @@ public class MybatisPoSyncAction extends AnAction {
             Matcher matcher = pattern.matcher(value);
             String columnStr = "";
             String fieldStr = "";
-            while(matcher.find()) {
+            while (matcher.find()) {
                 columnStr = matcher.group(1);
                 fieldStr = matcher.group(3);
             }

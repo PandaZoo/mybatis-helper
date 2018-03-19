@@ -16,23 +16,25 @@ import java.util.Objects;
  */
 public class AliasClassReference extends PsiReferenceBase<XmlAttributeValue> {
 
-  private Function<AliasDesc, String> function = AliasDesc::getAlias;
+    private Function<AliasDesc, String> function = AliasDesc::getAlias;
 
-  public AliasClassReference(@NotNull XmlAttributeValue element) {
-    super(element, true);
-  }
+    public AliasClassReference(@NotNull XmlAttributeValue element) {
+        super(element, true);
+    }
 
-  @Nullable @Override
-  public PsiElement resolve() {
-    XmlAttributeValue attributeValue = getElement();
-    return AliasFacade.getInstance(attributeValue.getProject()).findPsiClass(attributeValue, Objects.requireNonNull(attributeValue.getValue())).orNull();
-  }
+    @Nullable
+    @Override
+    public PsiElement resolve() {
+        XmlAttributeValue attributeValue = getElement();
+        return AliasFacade.getInstance(attributeValue.getProject()).findPsiClass(attributeValue, Objects.requireNonNull(attributeValue.getValue())).orElse(null);
+    }
 
-  @NotNull @Override
-  public Object[] getVariants() {
-    AliasFacade aliasFacade = AliasFacade.getInstance(getElement().getProject());
-    Collection<String> result = Collections2.transform(aliasFacade.getAliasDescs(getElement()), function);
-    return result.toArray(new String[result.size()]);
-  }
+    @NotNull
+    @Override
+    public Object[] getVariants() {
+        AliasFacade aliasFacade = AliasFacade.getInstance(getElement().getProject());
+        Collection<String> result = Collections2.transform(aliasFacade.getAliasDescs(getElement()), function);
+        return result.toArray(new String[result.size()]);
+    }
 
 }

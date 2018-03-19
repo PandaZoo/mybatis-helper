@@ -15,135 +15,136 @@ import java.util.Set;
 
 /**
  * Simple implementation
+ *
  * @author yongkang.zhang
  */
-public class Annotation implements Cloneable{
+public class Annotation implements Cloneable {
 
-  public static final Annotation PARAM = new Annotation("@Param", "org.apache.ibatis.annotations.Param");
+    public static final Annotation PARAM = new Annotation("@Param", "org.apache.ibatis.annotations.Param");
 
-  public static final Annotation SELECT = new Annotation("@Select", "org.apache.ibatis.annotations.Select");
+    public static final Annotation SELECT = new Annotation("@Select", "org.apache.ibatis.annotations.Select");
 
-  public static final Annotation UPDATE = new Annotation("@Update", "org.apache.ibatis.annotations.Update");
+    public static final Annotation UPDATE = new Annotation("@Update", "org.apache.ibatis.annotations.Update");
 
-  public static final Annotation INSERT = new Annotation("@Insert", "org.apache.ibatis.annotations.Insert");
+    public static final Annotation INSERT = new Annotation("@Insert", "org.apache.ibatis.annotations.Insert");
 
-  public static final Annotation DELETE = new Annotation("@Delete", "org.apache.ibatis.annotations.Delete");
+    public static final Annotation DELETE = new Annotation("@Delete", "org.apache.ibatis.annotations.Delete");
 
-  public static final Annotation ALIAS = new Annotation("@Alias", "org.apache.ibatis.type.Alias");
+    public static final Annotation ALIAS = new Annotation("@Alias", "org.apache.ibatis.type.Alias");
 
-  public static final Annotation AUTOWIRED = new Annotation("@Autowired", "org.springframework.beans.factory.annotation.Autowired");
+    public static final Annotation AUTOWIRED = new Annotation("@Autowired", "org.springframework.beans.factory.annotation.Autowired");
 
-  public static final Annotation RESOURCE = new Annotation("@Resource", "javax.annotation.Resource");
+    public static final Annotation RESOURCE = new Annotation("@Resource", "javax.annotation.Resource");
 
-  public static final Set<Annotation> STATEMENT_SYMMETRIES = ImmutableSet.of(SELECT, UPDATE, INSERT, DELETE);
+    public static final Set<Annotation> STATEMENT_SYMMETRIES = ImmutableSet.of(SELECT, UPDATE, INSERT, DELETE);
 
-  private final String label;
+    private final String label;
 
-  private final String qualifiedName;
+    private final String qualifiedName;
 
-  private Map<String, AnnotationValue> attributePairs;
+    private Map<String, AnnotationValue> attributePairs;
 
-  public interface AnnotationValue {
-  }
+    public Annotation(@NotNull String label, @NotNull String qualifiedName) {
+        this.label = label;
+        this.qualifiedName = qualifiedName;
+        attributePairs = new HashMap<>();
+    }
 
-  public static class StringValue implements AnnotationValue{
+    private Annotation addAttribute(String key, AnnotationValue value) {
+        this.attributePairs.put(key, value);
+        return this;
+    }
 
-    private String value;
+    public Annotation withAttribute(@NotNull String key, @NotNull AnnotationValue value) {
+        Annotation copy = this.clone();
+        copy.attributePairs = new HashMap<>(this.attributePairs);
+        return copy.addAttribute(key, value);
+    }
 
-    public StringValue(@NotNull String value) {
-      this.value = value;
+    public Annotation withValue(@NotNull AnnotationValue value) {
+        return withAttribute("value", value);
     }
 
     @Override
     public String toString() {
-      return "\"" + value + "\"";
+        StringBuilder builder = new StringBuilder(label);
+        if (!attributePairs.entrySet().isEmpty()) {
+            builder.append(setupAttributeText());
+        }
+        return builder.toString();
     }
 
-  }
-
-  public Annotation(@NotNull String label, @NotNull String qualifiedName) {
-    this.label = label;
-    this.qualifiedName = qualifiedName;
-    attributePairs = new HashMap<>();
-  }
-
-  private Annotation addAttribute(String key, AnnotationValue value) {
-    this.attributePairs.put(key, value);
-    return this;
-  }
-
-  public Annotation withAttribute(@NotNull String key, @NotNull AnnotationValue value) {
-    Annotation copy = this.clone();
-    copy.attributePairs = new HashMap<>(this.attributePairs);
-    return copy.addAttribute(key, value);
-  }
-
-  public Annotation withValue(@NotNull AnnotationValue value) {
-    return withAttribute("value", value);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder(label);
-    if (!attributePairs.entrySet().isEmpty()) {
-      builder.append(setupAttributeText());
+    private String setupAttributeText() {
+        Optional<String> singleValue = getSingleValue();
+        return singleValue.orElseGet(this::getComplexValue);
     }
-    return builder.toString();
-  }
 
-  private String setupAttributeText() {
-    Optional<String> singleValue = getSingleValue();
-    return singleValue.orElseGet(this::getComplexValue);
-  }
-
-  private String getComplexValue() {
-    StringBuilder builder = new StringBuilder("(");
-    for (String key : attributePairs.keySet()) {
-      builder.append(key);
-      builder.append(" = ");
-      builder.append(attributePairs.get(key).toString());
-      builder.append(", ");
+    private String getComplexValue() {
+        StringBuilder builder = new StringBuilder("(");
+        for (String key : attributePairs.keySet()) {
+            builder.append(key);
+            builder.append(" = ");
+            builder.append(attributePairs.get(key).toString());
+            builder.append(", ");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append(")");
+        return builder.toString();
     }
-    builder.deleteCharAt(builder.length() - 1);
-    builder.deleteCharAt(builder.length() - 1);
-    builder.append(")");
-    return builder.toString();
-  }
 
-  @NotNull
-  public Optional<PsiClass> toPsiClass(@NotNull Project project) {
-    return Optional.ofNullable(JavaPsiFacade.getInstance(project).findClass(getQualifiedName(), GlobalSearchScope.allScope(project)));
-  }
-
-  private Optional<String> getSingleValue() {
-    try {
-      String value = Iterables.getOnlyElement(attributePairs.keySet());
-      StringBuilder builder = new StringBuilder("(");
-      builder.append(attributePairs.get(value).toString());
-      builder.append(")");
-      return Optional.of(builder.toString());
-    } catch (Exception e) {
-      return Optional.empty();
+    @NotNull
+    public Optional<PsiClass> toPsiClass(@NotNull Project project) {
+        return Optional.ofNullable(JavaPsiFacade.getInstance(project).findClass(getQualifiedName(), GlobalSearchScope.allScope(project)));
     }
-  }
 
-  @NotNull
-  public String getLabel() {
-    return label;
-  }
-
-  @NotNull
-  public String getQualifiedName() {
-    return qualifiedName;
-  }
-
-  @Override
-  protected Annotation clone() {
-    try {
-      return (Annotation)super.clone();
-    } catch (CloneNotSupportedException e) {
-      throw new IllegalStateException();
+    private Optional<String> getSingleValue() {
+        try {
+            String value = Iterables.getOnlyElement(attributePairs.keySet());
+            StringBuilder builder = new StringBuilder("(");
+            builder.append(attributePairs.get(value).toString());
+            builder.append(")");
+            return Optional.of(builder.toString());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
-  }
+
+    @NotNull
+    public String getLabel() {
+        return label;
+    }
+
+    @NotNull
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    @Override
+    protected Annotation clone() {
+        try {
+            return (Annotation) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public interface AnnotationValue {
+    }
+
+    public static class StringValue implements AnnotationValue {
+
+        private String value;
+
+        public StringValue(@NotNull String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "\"" + value + "\"";
+        }
+
+    }
 
 }

@@ -3,6 +3,6 @@ package cn.kevin.dom.model;
 /**
  * @author yongkang.zhang
  */
-public interface Update extends GroupTwo{
+public interface Update extends GroupTwo {
 
 }

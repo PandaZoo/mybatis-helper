@@ -2,7 +2,9 @@ package cn.kevin.action;
 
 import cn.kevin.dialog.MybatisHelperDialog;
 import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;

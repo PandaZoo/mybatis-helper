@@ -23,13 +23,41 @@
     <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
     -->
+    <depends optional="true">com.intellij.spring</depends>
 
     <!-- 如果想让其他插件集成这个插件的功能，需要定义一些可集成的point
          https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_extensions_and_extension_points.html
      -->
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <dom.fileDescription implementation="cn.kevin.xml.MybatisDomFileDescription"  />
+        <dom.fileDescription implementation="cn.kevin.xml.MybatisDomFileDescription" order="first" />
+        <projectService serviceImplementation="cn.kevin.service.JavaService" />
+        <projectService serviceImplementation="cn.kevin.service.AnnotationService" />
+        <projectService serviceImplementation="cn.kevin.service.EditorService" />
+        <projectService serviceImplementation="cn.kevin.alias.AliasFacade" />
+        <projectService serviceImplementation="cn.kevin.locator.MapperLocator" />
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.MapperLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="XML" implementationClass="cn.kevin.provider.StatementLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.InjectionLineMarkerProvider" />
+        <typedHandler implementation="cn.kevin.action.MybatisTypedHandler" />
+        <refactoring.elementListenerProvider implementation="cn.kevin.refactoring.MapperRefactoringProvider" />
+        <localInspection language="JAVA" shortName="MybatisMapperMethodInspection" displayName="Mapper method inspection"
+                         groupName="Mybatis" enabledByDefault="true" level="ERROR"
+                         implementationClass="cn.kevin.inspection.MapperMethodInspection" />
+        <localInspection language="XML" shortName="MybatisMapperXmlInspection" displayName="Mapper xml inspection"
+                         groupName="Mybatis" enabledByDefault="true" level="ERROR"
+                         implementationClass="cn.kevin.inspection.MapperXmlInspection" />
+        <intentionAction>
+            <className>cn.kevin.intention.GenerateParamAnnotationIntention</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>cn.kevin.intention.GenerateStatementIntention</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>cn.kevin.intention.GenerateMapperIntention</className>
+        </intentionAction>
     </extensions>
 
     <actions>

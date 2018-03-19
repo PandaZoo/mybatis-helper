@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Package extends DomElement {
 
-  @NotNull
-  @Attribute("name")
-  GenericAttributeValue<String> getName();
+    @NotNull
+    @Attribute("name")
+    GenericAttributeValue<String> getName();
 
 }

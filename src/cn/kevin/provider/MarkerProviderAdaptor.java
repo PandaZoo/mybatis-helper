@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * created by yongkang.zhang
  * added at 2018/3/16
  */
