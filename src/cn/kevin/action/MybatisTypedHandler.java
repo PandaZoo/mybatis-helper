@@ -14,6 +14,12 @@ import com.intellij.sql.psi.SqlFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * Handler, extending IDE behaviour on typing in editor.
+ * <p>
+ * Note that {@code PsiFile} passed to handler's methods isn't guaranteed to be in sync with the document at the time of invocation
+ * (due to performance considerations). should be invoked explicitly,
+ * if an up-to-date PSI is required.
+ *
  * @author yongkang.zhang
  */
 public class MybatisTypedHandler extends TypedHandlerDelegate {
