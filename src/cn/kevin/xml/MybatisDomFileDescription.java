@@ -1,5 +1,6 @@
 package cn.kevin.xml;
 
+import cn.kevin.dom.model.Mapper;
 import cn.kevin.util.DomUtils;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.xml.XmlFile;
@@ -12,10 +13,10 @@ import org.jetbrains.annotations.Nullable;
  * created by yongkang.zhang
  * added at 2018/2/7
  */
-public class MybatisDomFileDescription extends DomFileDescription<ElementAndAttributes.Root> {
+public class MybatisDomFileDescription extends DomFileDescription<Mapper> {
 
     public MybatisDomFileDescription() {
-        super(ElementAndAttributes.Root.class, "mapper");
+        super(Mapper.class, "mapper");
     }
 
     @Override

@@ -2,9 +2,12 @@ package cn.kevin.action;
 
 import cn.kevin.dialog.MyNotification;
 import cn.kevin.dialog.MybatisHelperDialog;
+import cn.kevin.dom.model.Insert;
+import cn.kevin.dom.model.Mapper;
+import cn.kevin.dom.model.ResultMap;
+import cn.kevin.dom.model.Sql;
 import cn.kevin.factory.ConvertorFacotry;
 import cn.kevin.factory.FieldFacotry;
-import cn.kevin.xml.ElementAndAttributes;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -101,18 +104,18 @@ public class MybatisPoSyncAction extends AnAction {
     }
 
     private void writeXml(final Project project, final XmlFile xmlFile, final String name, final String propertyName, final String type) {
-        ElementAndAttributes.Root rootElement = Objects.requireNonNull(DomManager.getDomManager(project).getFileElement(xmlFile, ElementAndAttributes.Root.class)).getRootElement();
+        Mapper rootElement = Objects.requireNonNull(DomManager.getDomManager(project).getFileElement(xmlFile, Mapper.class)).getRootElement();
 
-        List<ElementAndAttributes.ResultMap> results = rootElement.getResultMaps();
-        List<ElementAndAttributes.Sql> sqls = rootElement.getSqls();
-        List<ElementAndAttributes.Insert> inserts = rootElement.getInsertTags();
+        List<ResultMap> results = rootElement.getResultMaps();
+        List<Sql> sqls = rootElement.getSqls();
+        List<Insert> inserts = rootElement.getInserts();
 
         addToResultMap(project, results, name, propertyName, type);
         addToUpdate(project, sqls, propertyName);
         addToInsert(project, inserts, propertyName);
     }
 
-    private void addToResultMap(final Project project, List<ElementAndAttributes.ResultMap> list, String name, String propertyName, String type) {
+    private void addToResultMap(final Project project, List<ResultMap> list, String name, String propertyName, String type) {
         list.forEach(r -> {
             // 只有是这个bean的type才会进行设置
             if (r.getType().toString().endsWith(name)) {
@@ -127,12 +130,12 @@ public class MybatisPoSyncAction extends AnAction {
         });
     }
 
-    private void addToUpdate(final Project project, List<ElementAndAttributes.Sql> list, String propertyName) {
+    private void addToUpdate(final Project project, List<Sql> list, String propertyName) {
         list.forEach(s -> {
             String sqlId = s.getId().toString();
             boolean isUpdate = Pattern.compile(Pattern.quote("update"), Pattern.CASE_INSENSITIVE).matcher(sqlId).find();
             if (isUpdate) {
-                XmlTag xmlTag = s.getSetTag().getXmlTag();
+                XmlTag xmlTag = s.getSets().get(0).getXmlTag();
                 XmlTag ifTag = xmlTag.createChildTag("if", xmlTag.getNamespace(), "\n" + ConvertorFacotry.camlToUnderScore(propertyName) + " = #{" + propertyName + "},\n", false);
                 ifTag.setAttribute("test", propertyName + " != null");
                 FieldFacotry.addXmlTag(project, xmlTag, ifTag);
@@ -140,10 +143,11 @@ public class MybatisPoSyncAction extends AnAction {
         });
     }
 
-    private void addToInsert(final Project project, List<ElementAndAttributes.Insert> list, String propertyName) {
+    // TODO 修改
+    private void addToInsert(final Project project, List<Insert> list, String propertyName) {
         list.forEach(i -> {
             // 替换所有的换行符
-            String value = i.getValue().replace("\n", "");
+            String value = "";// i.get().replace("\n", "");
             Pattern pattern = Pattern.compile(INSERT_GOURP_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(value);
             String columnStr = "";

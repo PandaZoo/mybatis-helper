@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * find psFile of mapper xml file
  * @author yongkang.zhang
  */
 public class MapperXmlPackageProvider extends PackageProvider {

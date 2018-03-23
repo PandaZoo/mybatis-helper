@@ -4,6 +4,7 @@ import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * locate strategy
  * @author yongkang.zhang
  */
 public abstract class LocateStrategy {

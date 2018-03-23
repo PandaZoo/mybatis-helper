@@ -1,6 +1,6 @@
 package cn.kevin.factory;
 
-import cn.kevin.xml.ElementAndAttributes;
+import cn.kevin.dom.model.Insert;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -45,10 +45,8 @@ public class FieldFacotry {
         });
     }
 
-    public static void setXmlTagValue(final Project project, final ElementAndAttributes.Insert insert, String value) {
-        WriteCommandAction.runWriteCommandAction(project, () -> {
-            insert.setTagValue(value);
-        });
+    public static void setXmlTagValue(final Project project, final Insert insert, String value) {
+        WriteCommandAction.runWriteCommandAction(project, () -> insert.setValue(value));
     }
 
 }

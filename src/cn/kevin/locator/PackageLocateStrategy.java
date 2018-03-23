@@ -7,6 +7,7 @@ import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * package locate strategy
  * @author yongkang.zhang
  */
 public class PackageLocateStrategy extends LocateStrategy {

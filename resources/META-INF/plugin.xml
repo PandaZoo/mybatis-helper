@@ -24,6 +24,7 @@
     <depends>com.intellij.modules.lang</depends>
     -->
     <depends optional="true">com.intellij.spring</depends>
+    <depends optional="true">com.intellij.sql</depends>
 
     <!-- 如果想让其他插件集成这个插件的功能，需要定义一些可集成的point
          https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_extensions_and_extension_points.html
@@ -39,7 +40,13 @@
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.MapperLineMarkerProvider" />
         <codeInsight.lineMarkerProvider language="XML" implementationClass="cn.kevin.provider.StatementLineMarkerProvider" />
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.InjectionLineMarkerProvider" />
-        <typedHandler implementation="cn.kevin.action.MybatisTypedHandler" />
+        <applicationConfigurable instance="cn.kevin.setting.MybatisConfigurable" />
+        <applicationService serviceInterface="cn.kevin.setting.MybatisSetting" serviceImplementation="cn.kevin.setting.MybatisSetting"/>
+        <completion.contributor language="XML" implementationClass="cn.kevin.contributor.TestParamContributor" />
+        <completion.contributor language="SQL" implementationClass="cn.kevin.contributor.SqlParamCompletionContributor" />
+        <fileTemplateGroup implementation="cn.kevin.template.MybatisFileTemplateDescriptorFactory" />
+        <typedHandler implementation="cn.kevin.action.MybatisTypedHandler" id="mybatis" order="first" />
+        <defaultLiveTemplatesProvider implementation="cn.kevin.template.SqlLiveTemplateProvider" />
         <refactoring.elementListenerProvider implementation="cn.kevin.refactoring.MapperRefactoringProvider" />
         <localInspection language="JAVA" shortName="MybatisMapperMethodInspection" displayName="Mapper method inspection"
                          groupName="Mybatis" enabledByDefault="true" level="ERROR"
@@ -55,7 +62,7 @@
             <className>cn.kevin.intention.GenerateStatementIntention</className>
         </intentionAction>
 
-        <intentionAction>
+        <intentionAction order="first">
             <className>cn.kevin.intention.GenerateMapperIntention</className>
         </intentionAction>
     </extensions>
