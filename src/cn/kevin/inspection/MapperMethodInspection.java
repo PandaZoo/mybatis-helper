@@ -22,13 +22,18 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * inspect problem method
  * @author yongkang.zhang
  */
 public class MapperMethodInspection extends MapperInspection {
 
+    /**
+     * overwrite checkMethod to find ProblemDescriptor
+     */
     @Nullable
     @Override
     public ProblemDescriptor[] checkMethod(@NotNull PsiMethod method, @NotNull InspectionManager manager, boolean isOnTheFly) {
+        // could process method or isAnnotationedWith Annotation.STATEMENT_SYMMETRIES
         if (!MapperLocator.getInstance(method.getProject()).process(method) || JavaUtils.isAnyAnnotationPresent(method, Annotation.STATEMENT_SYMMETRIES))
             return EMPTY_ARRAY;
         List<ProblemDescriptor> res = createProblemDescriptors(method, manager, isOnTheFly);

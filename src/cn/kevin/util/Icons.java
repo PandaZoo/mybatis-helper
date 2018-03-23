@@ -6,6 +6,10 @@ import com.intellij.util.PlatformIcons;
 import javax.swing.*;
 
 /**
+ * - iconName.png W x H pixels (Will be used on non-Retina devices with default look and feel)
+ * - iconName@2x.png 2*W x 2*H pixels (Will be used on Retina devices with default look and feel)
+ * - iconName_dark.png W x H pixels (Will be used on non-Retina devices with Darcula look and feel)
+ * - iconName@2x_dark.png 2*W x 2*H pixels (Will be used on Retina devices with Darcula look and feel)
  * @author yongkang.zhang
  */
 public interface Icons {

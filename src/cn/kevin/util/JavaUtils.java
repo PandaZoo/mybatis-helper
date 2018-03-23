@@ -46,6 +46,9 @@ public final class JavaUtils {
         return fields.toArray(new PsiField[fields.size()]);
     }
 
+    /**
+     * test element is interface or has a interface parent
+     */
     public static boolean isElementWithinInterface(@Nullable PsiElement element) {
         if (element instanceof PsiClass && ((PsiClass) element).isInterface()) {
             return true;
