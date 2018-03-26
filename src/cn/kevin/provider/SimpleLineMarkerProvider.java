@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Simple line provider
  * created by yongkang.zhang
  * added at 2018/3/16
  */
@@ -53,8 +54,18 @@ public abstract class SimpleLineMarkerProvider<F extends PsiElement, T> extends 
         return (mouseEvent, from) -> getNavigatable(from, target).navigate(true);
     }
 
+    /**
+     * is the right element type to process
+     * @param element element
+     * @return check result
+     */
     public abstract boolean isTheElement(@NotNull PsiElement element);
 
+    /**
+     * convert f to Optional&lt;T&gt;
+     * @param from F
+     * @return Optional&lt;T&gt;
+     */
     @NotNull
     public abstract Optional<T> apply(@NotNull F from);
 

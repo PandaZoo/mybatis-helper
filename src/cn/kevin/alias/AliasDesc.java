@@ -4,6 +4,7 @@ import com.intellij.psi.PsiClass;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * alias class
  * @author yongkang.zhang
  */
 public class AliasDesc {

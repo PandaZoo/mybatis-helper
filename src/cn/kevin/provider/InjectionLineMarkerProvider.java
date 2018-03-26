@@ -59,10 +59,12 @@ public class InjectionLineMarkerProvider extends RelatedItemLineMarkerProvider {
 
 
     private boolean isTargetField(PsiField field) {
+        // is Autowired
         if (JavaUtils.isAnnotationPresent(field, Annotation.AUTOWIRED)) {
             return true;
         }
 
+        // is Resource Present
         Optional<PsiAnnotation> psiAnnotation = JavaUtils.getPsiAnnotation(field, Annotation.RESOURCE);
         if (psiAnnotation.isPresent()) {
             PsiAnnotationMemberValue nameValue = psiAnnotation.get().findAttributeValue("name");

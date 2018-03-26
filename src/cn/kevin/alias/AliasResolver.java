@@ -33,6 +33,11 @@ public abstract class AliasResolver {
         return Optional.of(desc);
     }
 
+    /**
+     *
+     * @param element element
+     * @return Set of AliasDesc
+     */
     @NotNull
     public abstract Set<AliasDesc> getClassAliasDescriptions(@Nullable PsiElement element);
 

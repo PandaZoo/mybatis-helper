@@ -13,4 +13,8 @@ public interface IdDomElement extends DomElement {
     GenericAttributeValue<String> getId();
 
     void setValue(String content);
+
+    @TagValue
+    String getValue();
+
 }

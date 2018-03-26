@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 对应mapper文件的描述，把xml和ElementAndAttributes.Root关联起来
+ * 对应mapper文件的描述，把xml和Mapper关联起来
  * created by yongkang.zhang
  * added at 2018/2/7
  */

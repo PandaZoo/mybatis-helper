@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * Locate Mapper
  * @author yongkang.zhang
  */
 public class MapperLocator {

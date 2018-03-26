@@ -23,7 +23,7 @@ public class FieldFacotry {
             public void visitElement(PsiElement element) {
                 super.visitElement(element);
                 if (element instanceof PsiClass) {
-                    System.out.println("找到了class" + element);
+                    System.out.println("found class" + element);
                     clazzList.add((PsiClass) element);
                 }
             }

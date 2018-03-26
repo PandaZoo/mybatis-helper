@@ -72,7 +72,7 @@ public class MybatisPoSyncAction extends AnAction {
         if (exitCode != 0) {
             return null;
         }
-        return dialog.getAddField().getText();
+        return dialog.getFieldType() + " " +  dialog.getFiledName();
     }
 
 
@@ -143,11 +143,10 @@ public class MybatisPoSyncAction extends AnAction {
         });
     }
 
-    // TODO 修改
     private void addToInsert(final Project project, List<Insert> list, String propertyName) {
         list.forEach(i -> {
             // 替换所有的换行符
-            String value = "";// i.get().replace("\n", "");
+            String value = i.getValue().replace("\n", "");
             Pattern pattern = Pattern.compile(INSERT_GOURP_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(value);
             String columnStr = "";
@@ -160,7 +159,7 @@ public class MybatisPoSyncAction extends AnAction {
             if (!Strings.isNullOrEmpty(columnStr) && !Strings.isNullOrEmpty(fieldStr)) {
                 String afterColumnStr = columnStr.replace(")", "," + ConvertorFacotry.camlToUnderScore(propertyName) + ")");
                 String temp = value.replace(columnStr, afterColumnStr + "\n");
-                String newInsertStr = temp.substring(0, temp.lastIndexOf(")")).concat(", #{" + propertyName + "})");
+                String newInsertStr = "\n" + temp.substring(0, temp.lastIndexOf(")")).concat(", #{" + propertyName + "})");
 
                 // set value
                 FieldFacotry.setXmlTagValue(project, i, newInsertStr);

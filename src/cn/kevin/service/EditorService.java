@@ -15,6 +15,7 @@ import com.intellij.psi.impl.source.codeStyle.CodeFormatterFacade;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * use to get file editor then format or scrollTo
  * @author yongkang.zhang
  */
 public class EditorService {

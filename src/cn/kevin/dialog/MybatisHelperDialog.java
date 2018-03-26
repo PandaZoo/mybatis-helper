@@ -1,5 +1,6 @@
 package cn.kevin.dialog;
 
+import cn.kevin.action.form.AddFieldForm;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
@@ -16,28 +17,19 @@ import java.util.function.Consumer;
  */
 public class MybatisHelperDialog extends DialogWrapper {
 
-    private JPanel jPanel;
-    private JTextField addField;
-    private Consumer<JTextField> jTextFieldConsumer;
+    private AddFieldForm addFieldForm;
 
     public MybatisHelperDialog(Project project) {
         super(project);
         super.init();
-        super.setTitle("Mybatis Po Sync");
-        this.jPanel = null;
+        super.setTitle("Add Field");
     }
 
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        this.jPanel = new JPanel();
-        JLabel jLabel = new JLabel("增加字段名:");
-        this.addField = new JTextField("", 30);
-
-        this.jPanel.add(jLabel);
-        this.jPanel.add(this.addField);
-        this.jPanel.setVisible(true);
-        return this.jPanel;
+        this.addFieldForm = new AddFieldForm();
+        return this.addFieldForm.getMainPanel();
     }
 
     @Override
@@ -53,20 +45,20 @@ public class MybatisHelperDialog extends DialogWrapper {
         super.doCancelAction();
     }
 
-    public void setjTextFieldConsumer(Consumer<JTextField> jTextFieldConsumer) {
-        this.jTextFieldConsumer = jTextFieldConsumer;
+    public String getFieldType() {
+        return (String) this.addFieldForm.getFieldType().getSelectedItem();
     }
 
-    public JTextField getAddField() {
-        return addField;
+    public String getFiledName() {
+        return this.addFieldForm.getFieldName().getText();
     }
 
     @Nullable
     @Override
     protected ValidationInfo doValidate() {
-        String text = this.addField.getText();
-        if (Strings.isNullOrEmpty(text) || text.split("\\s+").length < 2) {
-            return new ValidationInfo("请输入需要添加的内容, 需要包括类型和字段名");
+        String text = getFiledName();
+        if (Strings.isNullOrEmpty(text)) {
+            return new ValidationInfo("请输入需要添加的字段名");
         }
         return super.doValidate();
     }

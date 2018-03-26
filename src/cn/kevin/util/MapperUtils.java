@@ -159,6 +159,10 @@ public final class MapperUtils {
         return isMapperWithSameNamespace(contextMapper, mapper) ? getId(domElement) : getIdSignature(domElement);
     }
 
+    /**
+     * @param project project
+     * @param processor TypeAlias processor
+     */
     public static void processConfiguredTypeAliases(@NotNull Project project, @NotNull Processor<TypeAlias> processor) {
         for (Configuration conf : getMybatisConfigurations(project)) {
             for (TypeAliases tas : conf.getTypeAliases()) {

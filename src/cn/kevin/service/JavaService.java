@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 /**
+ * Java Service
+ * register in plugin.xml
+ * use to find reference and process method or class of mapper xml file
  * @author yongkang.zhang
  */
 public class JavaService {

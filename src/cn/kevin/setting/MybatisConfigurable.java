@@ -26,6 +26,7 @@ public class MybatisConfigurable implements SearchableConfigurable {
 
     private Splitter splitter = Splitter.on(separator).omitEmptyStrings().trimResults();
 
+    // is Resource Present
     private Joiner joiner = Joiner.on(separator);
 
     public MybatisConfigurable() {

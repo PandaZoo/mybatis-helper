@@ -32,12 +32,13 @@ public class MapperLineMarkerProvider extends RelatedItemLineMarkerProvider {
 
     @Override
     protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
-        //super.collectNavigationMarkers(elements, result);
         if (element instanceof PsiNameIdentifierOwner && JavaUtils.isElementWithinInterface(element)) {
+            // Collect processor. pair mapper and java and add psiMethod or pisClass
             CommonProcessors.CollectProcessor<IdDomElement> processor = new CommonProcessors.CollectProcessor<>();
             JavaService.getInstance(element.getProject()).process(element, processor);
             Collection<IdDomElement> results = processor.getResults();
             if (!results.isEmpty()) {
+                // add to LineMarkerInfo
                 NavigationGutterIconBuilder<PsiElement> builder =
                         NavigationGutterIconBuilder.create(Icons.MAPPER_LINE_MARKER_ICON)
                                 .setAlignment(GutterIconRenderer.Alignment.CENTER)

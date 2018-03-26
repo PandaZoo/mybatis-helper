@@ -37,6 +37,7 @@
         <projectService serviceImplementation="cn.kevin.service.EditorService" />
         <projectService serviceImplementation="cn.kevin.alias.AliasFacade" />
         <projectService serviceImplementation="cn.kevin.locator.MapperLocator" />
+        <definitionsSearch implementation="cn.kevin.reference.MapperMethodImplementationSearch" />
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.MapperLineMarkerProvider" />
         <codeInsight.lineMarkerProvider language="XML" implementationClass="cn.kevin.provider.StatementLineMarkerProvider" />
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="cn.kevin.provider.InjectionLineMarkerProvider" />
@@ -54,6 +55,7 @@
         <localInspection language="XML" shortName="MybatisMapperXmlInspection" displayName="Mapper xml inspection"
                          groupName="Mybatis" enabledByDefault="true" level="ERROR"
                          implementationClass="cn.kevin.inspection.MapperXmlInspection" />
+        <!-- intentAction is fix action when some specific problems were found -->
         <intentionAction>
             <className>cn.kevin.intention.GenerateParamAnnotationIntention</className>
         </intentionAction>
@@ -69,13 +71,9 @@
 
     <actions>
         <!-- Add your actions here -->
-        <group id="MybatisHelper.modify" text="modify mybatis po" description="modify">
-            <add-to-group group-id="GenerateGroup" anchor="last" />
-            <action id="MybatisHelperPlugin.modfiy" class="cn.kevin.action.MybatisHelperAction" text="mybaits po modify" description="modify">
-            </action>
-        </group>
         <group id="plugin" text="plugin" description="plugin">
             <add-to-group group-id="MainMenu" anchor="after" relative-to-action="HelpMenu" />
+            <add-to-group group-id="GenerateGroup" anchor="last" />
             <action id="mybatis po sync" class="cn.kevin.action.MybatisPoSyncAction" text="mybatis po sync">
             </action>
         </group>

@@ -129,7 +129,7 @@ public class Annotation implements Cloneable {
         }
     }
 
-    public interface AnnotationValue {
+    interface AnnotationValue {
     }
 
     public static class StringValue implements AnnotationValue {
