@@ -26,5 +26,7 @@ nbdist/
 nogit/
 
 out/
+output/
+.DS_Store
 
 mybatis-helper.jar
