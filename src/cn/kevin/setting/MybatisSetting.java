@@ -21,7 +21,7 @@ import static cn.kevin.generate.StatementGenerator.*;
  */
 @State(
         name = "MybatisSettings",
-        storages = @Storage(value = "other", file = "$APP_CONFIG$/mybatis.xml"))
+        storages = @Storage("$APP_CONFIG$/mybatis.xml"))
 public class MybatisSetting implements PersistentStateComponent<Element> {
 
     private GenerateModel statementGenerateModel;

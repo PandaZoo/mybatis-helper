@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 /**
+ * 这个用来获取class的属性，比如ResultMap
  * @author yongkang.zhang
  */
 public final class MapperBacktrackingUtils {

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>cn.kevin.mybatis.hepler</id>
     <name>mybatis-helper</name>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <vendor email="sutonlineskyon@gmail.com" url="">kevin</vendor>
 
     <description><![CDATA[
@@ -11,7 +11,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Nothing here
+      fix storage bug
     ]]>
     </change-notes>
 
