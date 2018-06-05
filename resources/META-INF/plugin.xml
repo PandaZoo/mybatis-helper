@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>cn.kevin.mybatis.hepler</id>
     <name>mybatis-helper</name>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <vendor email="sutonlineskyon@gmail.com" url="">kevin</vendor>
 
     <description><![CDATA[

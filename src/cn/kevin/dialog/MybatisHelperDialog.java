@@ -8,7 +8,6 @@ import org.fest.util.Strings;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.function.Consumer;
 
 /**
  * dialog类
@@ -17,7 +16,7 @@ import java.util.function.Consumer;
  */
 public class MybatisHelperDialog extends DialogWrapper {
 
-    private AddFieldForm addFieldForm;
+    private MybatisHelperForm helperForm;
 
     public MybatisHelperDialog(Project project) {
         super(project);
@@ -28,8 +27,8 @@ public class MybatisHelperDialog extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        this.addFieldForm = new AddFieldForm();
-        return this.addFieldForm.getMainPanel();
+        this.helperForm = new MybatisHelperForm();
+        return this.helperForm.getMainPanel();
     }
 
     @Override
@@ -46,11 +45,11 @@ public class MybatisHelperDialog extends DialogWrapper {
     }
 
     public String getFieldType() {
-        return (String) this.addFieldForm.getFieldType().getSelectedItem();
+        return (String) this.helperForm.getFieldType().getSelectedItem();
     }
 
     public String getFiledName() {
-        return this.addFieldForm.getFieldName().getText();
+        return this.helperForm.getFieldName().getText();
     }
 
     @Nullable
