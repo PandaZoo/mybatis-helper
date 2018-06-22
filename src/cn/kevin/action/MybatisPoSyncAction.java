@@ -144,9 +144,10 @@ public class MybatisPoSyncAction extends AnAction {
     }
 
     private void addToInsert(final Project project, List<Insert> list, String propertyName) {
+        String nonPrintable = "\u0000";
         list.forEach(i -> {
             // 替换所有的换行符
-            String value = i.getValue().replace("\n", "");
+            String value = i.getValue().replace("\n", nonPrintable);
             Pattern pattern = Pattern.compile(INSERT_GOURP_PATTERN, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(value);
             String columnStr = "";
@@ -162,7 +163,7 @@ public class MybatisPoSyncAction extends AnAction {
                 String newInsertStr = "\n" + temp.substring(0, temp.lastIndexOf(")")).concat(", #{" + propertyName + "})");
 
                 // set value
-                FieldFacotry.setXmlTagValue(project, i, newInsertStr);
+                FieldFacotry.setXmlTagValue(project, i, newInsertStr.replace(nonPrintable, "\n"));
             }
         });
 
